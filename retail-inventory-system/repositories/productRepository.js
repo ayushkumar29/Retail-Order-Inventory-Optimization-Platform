@@ -44,8 +44,6 @@ class ProductRepository {
     }
 
     async delete(product_id, connection = db) {
-        // Note: In real app, we might check for existing orders before deleting
-        // But here we rely on the DB schema constraints or just delete
         const [result] = await connection.query('DELETE FROM Products WHERE product_id = ?', [product_id]);
         return result.affectedRows > 0;
     }

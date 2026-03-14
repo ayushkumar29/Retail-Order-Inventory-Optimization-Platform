@@ -14,21 +14,21 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // Middleware
-app.use(morgan('dev')); // Log HTTP requests
+app.use(morgan('dev'));
 app.use(cors());
-app.use(express.json()); // Parses incoming JSON requests
+app.use(express.json());
 
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Routes
+// API Routes
 app.use('/products', productRoutes);
 app.use('/inventory', inventoryRoutes);
 app.use('/orders', orderRoutes);
 app.use('/suppliers', supplierRoutes);
 app.use('/reports', reportingRoutes);
 
-// Centralized Error Handling Middleware
+// Error handling
 app.use((req, res, next) => {
     res.status(404).json({ success: false, error: `Path not found: ${req.originalUrl}` });
 });
@@ -42,7 +42,6 @@ app.listen(PORT, async () => {
     console.log(`View the Frontend Application at: http://localhost:${PORT}`);
     console.log(`Backend API available at: http://localhost:${PORT}/products`);
     
-    // Verify Database Connection
     try {
         const connection = await db.getConnection();
         console.log('✅ Database connection verified successfully!');

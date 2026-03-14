@@ -1,7 +1,3 @@
-/**
- * HTML Templates for SPA Views
- */
-
 function DashboardView() {
     return `
         <h2 class="page-header">Dashboard Overview</h2>
@@ -374,9 +370,6 @@ function ReportsView() {
     `;
 }
 
-/**
- * Additional Modals for SPA
- */
 function ProductEditModalView() {
     return `
         <div class="modal fade" id="editProductModal" tabindex="-1">

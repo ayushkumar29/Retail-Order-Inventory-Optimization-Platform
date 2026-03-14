@@ -100,20 +100,14 @@ async function confirmDeleteProduct(id) {
         return;
     }
     
-    console.log(`[Products] Attempting to delete product ID: ${id}`);
-    
     if (confirm('Are you sure you want to delete this product? This will also remove its inventory records.')) {
         try {
-            console.log(`[Products] Calling deleteProduct API for ID: ${id}`);
             const result = await deleteProduct(id);
-            console.log(`[Products] Delete successful:`, result);
             showNotification('Product deleted successfully', 'success');
             loadProducts();
         } catch (error) {
-            console.error(`[Products] Delete failed for ID ${id}:`, error);
             const errorMessage = error.message || 'Failed to delete product';
             
-            // Provide more specific error messages
             if (errorMessage.includes('404') || errorMessage.includes('not found')) {
                 showNotification('Product not found. It may have been already deleted.', 'warning');
             } else if (errorMessage.includes('500') || errorMessage.includes('server error')) {
@@ -131,8 +125,6 @@ async function openEditProductModal(id) {
         return;
     }
     
-    console.log(`[Products] Attempting to edit product ID: ${id}`);
-    
     try {
         const products = await getProducts();
         const product = products.find(p => p.product_id === id);
@@ -141,14 +133,11 @@ async function openEditProductModal(id) {
             return;
         }
 
-        console.log(`[Products] Found product:`, product);
-
         document.getElementById('editProductId').value = product.product_id;
         document.getElementById('editProductName').value = product.name;
         document.getElementById('editProductCategory').value = product.category;
         document.getElementById('editProductPrice').value = product.price;
         
-        // Populate supplier dropdown for modal
         const suppliers = await getSuppliers();
         const select = document.getElementById('editProductSupplier');
         select.innerHTML = '<option value="" disabled>Select Supplier...</option>';
@@ -169,7 +158,6 @@ async function openEditProductModal(id) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
 
-        // One-time listener for the edit form
         const editForm = document.getElementById('edit-product-form');
         editForm.onsubmit = async (e) => {
             e.preventDefault();
@@ -180,19 +168,14 @@ async function openEditProductModal(id) {
                 supplier_id: parseInt(document.getElementById('editProductSupplier').value, 10)
             };
 
-            console.log(`[Products] Updating product ${id} with data:`, updatedData);
-
             try {
                 const result = await updateProduct(id, updatedData);
-                console.log(`[Products] Update successful:`, result);
                 showNotification('Product updated successfully', 'success');
                 modal.hide();
                 loadProducts();
             } catch (error) {
-                console.error(`[Products] Update failed for ID ${id}:`, error);
                 const errorMessage = error.message || 'Failed to update product';
                 
-                // Provide more specific error messages
                 if (errorMessage.includes('404') || errorMessage.includes('not found')) {
                     showNotification('Product not found. It may have been deleted.', 'warning');
                 } else if (errorMessage.includes('500') || errorMessage.includes('server error')) {
@@ -204,7 +187,6 @@ async function openEditProductModal(id) {
         };
 
     } catch (error) {
-        console.error(`[Products] Error opening edit modal for ID ${id}:`, error);
         showNotification('Failed to load product details', 'danger');
     }
 }

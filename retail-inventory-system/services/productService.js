@@ -4,8 +4,8 @@ const supplierRepository = require('../repositories/supplierRepository');
 const db = require('../config/db');
 
 class ProductService {
+    // Get all products with supplier names
     async getAllProducts() {
-        console.log('[ProductService] Fetching all products and merging supplier names');
         const [products, suppliers] = await Promise.all([
             productRepository.findAll(),
             supplierRepository.findAll()
@@ -20,6 +20,7 @@ class ProductService {
         }));
     }
 
+    // Create new product with initial inventory
     async createProduct(productData) {
         if (!productData.name || !productData.price) {
             throw new Error('Product name and price are required');
@@ -30,10 +31,7 @@ class ProductService {
         try {
             await connection.beginTransaction();
 
-            // 1. Create the Product
             const insertId = await productRepository.create(productData, connection);
-
-            // 2. Initialize Inventory for the new Product
             const initialStock = productData.initial_stock ? parseInt(productData.initial_stock, 10) : 0;
             await inventoryRepository.initializeStock(insertId, initialStock, connection);
 
@@ -47,13 +45,13 @@ class ProductService {
         }
     }
 
+    // Get top selling products
     async getTopProducts(limit) {
-        // Parse limit or default to 5
         const parsedLimit = parseInt(limit, 10) || 5;
-        console.log(`[ProductService] Fetching top ${parsedLimit} selling products...`);
         return await productRepository.getTopSellingProducts(parsedLimit);
     }
 
+    // Update product details
     async updateProduct(id, productData) {
         if (!productData.name || !productData.price) {
             throw new Error('Product name and price are required');
@@ -69,15 +67,14 @@ class ProductService {
         return updated;
     }
 
+    // Delete product and associated inventory
     async deleteProduct(id) {
         const connection = await db.getConnection();
         try {
             await connection.beginTransaction();
             
-            // 1. Delete Inventory first (or rely on CASCADE if exists)
             await connection.query('DELETE FROM Inventory WHERE product_id = ?', [id]);
             
-            // 2. Delete Product
             const deleted = await productRepository.delete(id, connection);
             
             if (!deleted) {

@@ -1,13 +1,7 @@
-// Detect correct API base
 const API_BASE_URL = (window.location.port === '3000') ? '' : 'http://localhost:3000';
-console.log(`[API Config] Base URL set to: "${API_BASE_URL || '(current origin)'}"`);
 
-/**
- * Generic Fetch Utility
- */
 async function fetchAPI(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
-    console.log(`[API Request] ${options.method || 'GET'} ${url}`);
     try {
         const response = await fetch(url, {
             headers: {
@@ -24,22 +18,16 @@ async function fetchAPI(endpoint, options = {}) {
         }
 
         if (!response.ok) {
-            // If we have JSON data with an error message, use it
             const errorMessage = (data && (data.error || data.message)) || `Server Error: ${response.status}`;
             throw new Error(errorMessage);
         }
         
-        // If it was OK but not JSON (rare for our API), return null or empty data
         return data && data.data !== undefined ? data.data : data;
     } catch (error) {
-        console.error(`[API Fetch Error] ${options.method || 'GET'} ${url}:`, error.message);
         throw error;
     }
 }
 
-/**
- * Products API
- */
 async function getProducts() {
     return fetchAPI('/products');
 }
@@ -51,9 +39,6 @@ async function createProduct(productData) {
     });
 }
 
-/**
- * Inventory API
- */
 async function getInventory() {
     return fetchAPI('/inventory');
 }
@@ -65,9 +50,6 @@ async function updateInventory(inventoryData) {
     });
 }
 
-/**
- * Orders API
- */
 async function getOrders() {
     return fetchAPI('/orders');
 }
@@ -86,9 +68,6 @@ async function updateOrderStatus(orderId, status) {
     });
 }
 
-/**
- * Suppliers API
- */
 async function getSuppliers() {
     return fetchAPI('/suppliers');
 }
@@ -113,11 +92,7 @@ async function deleteSupplier(id) {
     });
 }
 
-/**
- * Product Modifications
- */
 async function updateProduct(id, productData) {
-    console.log(`[API] Updating product ${id} with data:`, productData);
     return fetchAPI(`/products/${id}`, {
         method: 'PUT',
         body: JSON.stringify(productData)
@@ -125,15 +100,11 @@ async function updateProduct(id, productData) {
 }
 
 async function deleteProduct(id) {
-    console.log(`[API] Deleting product ${id}`);
     return fetchAPI(`/products/${id}`, {
         method: 'DELETE'
     });
 }
 
-/**
- * Order Modifications
- */
 async function updateOrder(id, orderData) {
     return fetchAPI(`/orders/${id}`, {
         method: 'PUT',
@@ -142,15 +113,11 @@ async function updateOrder(id, orderData) {
 }
 
 async function deleteOrder(id) {
-    console.log(`[API] Deleting order ${id}`);
     return fetchAPI(`/orders/${id}`, {
         method: 'DELETE'
     });
 }
 
-/**
- * Helper to show notifications
- */
 function showNotification(message, type = 'success') {
     const notificationArea = document.getElementById('notification-area');
     if (!notificationArea) return;
