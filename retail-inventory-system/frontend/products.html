@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Retail Analytics</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fa-solid fa-chart-pie me-2"></i>Retail Analytics
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inventory.html">Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="suppliers.html">Suppliers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">Orders</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notification Area -->
+    <div id="notification-area"></div>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+            <h2 class="page-header m-0">Manage Products</h2>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#addProductForm">
+                <i class="fa-solid fa-plus me-2"></i>Add New Product
+            </button>
+        </div>
+
+        <!-- Add Product Form -->
+        <div class="collapse mb-5" id="addProductForm">
+            <div class="card card-body shadow-sm border-0">
+                <h5 class="mb-4">Create Product</h5>
+                <form id="product-form">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="productName" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="productName" required placeholder="Enter product name">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="productCategory" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="productCategory" required placeholder="e.g. Electronics">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="productPrice" class="form-label">Price ($)</label>
+                            <input type="number" class="form-control" id="productPrice" required min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="productStock" class="form-label small text-muted">Initial Stock</label>
+                            <input type="number" class="form-control bg-light border-0" id="productStock" placeholder="0" min="0" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="productSupplier" class="form-label small text-muted">Supplier</label>
+                            <select class="form-select bg-light border-0" id="productSupplier" required>
+                                <option value="" disabled selected>Select Supplier...</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mt-4 text-end">
+                            <button type="button" class="btn btn-outline-secondary me-2" data-bs-toggle="collapse" data-bs-target="#addProductForm">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-check me-2"></i>Save Product</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="10%">ID</th>
+                        <th width="40%">Name</th>
+                        <th width="30%">Category</th>
+                        <th>Supplier</th>
+                        <th width="20%">Price</th>
+                    </tr>
+                </thead>
+                <tbody id="products-table-body">
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                            Loading products...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>
