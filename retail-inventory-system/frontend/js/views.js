@@ -1,8 +1,10 @@
 function DashboardView() {
     return `
         <h2 class="page-header">Dashboard Overview</h2>
+        
+        <!-- Key Metrics Cards -->
         <div class="row g-4 mt-2">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--primary-color) !important;">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -15,7 +17,7 @@ function DashboardView() {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--success-color) !important;">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -28,7 +30,7 @@ function DashboardView() {
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--danger-color) !important;">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -37,6 +39,102 @@ function DashboardView() {
                         </div>
                         <div class="bg-light p-3 rounded-circle" style="color: var(--danger-color);">
                             <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--warning-color) !important;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title text-muted mb-2">Total Revenue</h5>
+                            <h2 class="card-text display-4 mb-0" id="total-revenue">₹-</h2>
+                        </div>
+                        <div class="bg-light p-3 rounded-circle" style="color: var(--warning-color);">
+                            <i class="fa-solid fa-indian-rupee-sign fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analytics Sections -->
+        <div class="row g-4 mt-4">
+            <!-- Daily Sales Summary -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="m-0 fw-bold text-success"><i class="fa-solid fa-sack-dollar me-2"></i>Daily Sales Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Orders</th>
+                                        <th>Revenue</th>
+                                        <th>Items</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sales-summary-body">
+                                    <tr><td colspan="4" class="text-center py-4">Loading sales data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Performance -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="m-0 fw-bold text-primary"><i class="fa-solid fa-ranking-star me-2"></i>Top Products</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Sold</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-performance-body">
+                                    <tr><td colspan="3" class="text-center py-4">Loading performance data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Status -->
+        <div class="row g-4 mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="m-0 fw-bold text-warning"><i class="fa-solid fa-boxes-stacked me-2"></i>Inventory Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Stock Level</th>
+                                        <th>Warehouse</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-status-body">
+                                    <tr><td colspan="5" class="text-center py-4">Loading inventory data...</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

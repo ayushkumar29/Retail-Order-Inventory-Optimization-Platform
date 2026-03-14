@@ -43,6 +43,10 @@ async function getInventory() {
     return fetchAPI('/inventory');
 }
 
+async function getLowStock() {
+    return fetchAPI('/inventory/low-stock');
+}
+
 async function updateInventory(inventoryData) {
     return fetchAPI('/inventory/update', {
         method: 'PUT',
@@ -116,6 +120,19 @@ async function deleteOrder(id) {
     return fetchAPI(`/orders/${id}`, {
         method: 'DELETE'
     });
+}
+
+// Reporting APIs
+async function getInventoryReport() {
+    return fetchAPI('/reports/inventory');
+}
+
+async function getSalesReport() {
+    return fetchAPI('/reports/sales');
+}
+
+async function getProductPerformanceReport() {
+    return fetchAPI('/reports/performance');
 }
 
 function showNotification(message, type = 'success') {
