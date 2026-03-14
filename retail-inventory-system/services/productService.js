@@ -58,7 +58,15 @@ class ProductService {
         if (!productData.name || !productData.price) {
             throw new Error('Product name and price are required');
         }
-        return await productRepository.update(id, productData);
+        
+        const updated = await productRepository.update(id, productData);
+        if (!updated) {
+            const error = new Error(`Product ID ${id} not found`);
+            error.statusCode = 404;
+            throw error;
+        }
+        
+        return updated;
     }
 
     async deleteProduct(id) {
@@ -71,6 +79,13 @@ class ProductService {
             
             // 2. Delete Product
             const deleted = await productRepository.delete(id, connection);
+            
+            if (!deleted) {
+                await connection.rollback();
+                const error = new Error(`Product ID ${id} not found`);
+                error.statusCode = 404;
+                throw error;
+            }
             
             await connection.commit();
             return deleted;

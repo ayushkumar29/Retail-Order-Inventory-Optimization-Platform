@@ -137,6 +137,13 @@ class OrderService {
             // For now, pure deletion.
             const deleted = await orderRepository.delete(order_id, connection);
             
+            if (!deleted) {
+                await connection.rollback();
+                const error = new Error(`Order ID ${order_id} not found`);
+                error.statusCode = 404;
+                throw error;
+            }
+            
             await connection.commit();
             return deleted;
         } catch (error) {

@@ -117,6 +117,7 @@ async function deleteSupplier(id) {
  * Product Modifications
  */
 async function updateProduct(id, productData) {
+    console.log(`[API] Updating product ${id} with data:`, productData);
     return fetchAPI(`/products/${id}`, {
         method: 'PUT',
         body: JSON.stringify(productData)
@@ -124,6 +125,7 @@ async function updateProduct(id, productData) {
 }
 
 async function deleteProduct(id) {
+    console.log(`[API] Deleting product ${id}`);
     return fetchAPI(`/products/${id}`, {
         method: 'DELETE'
     });
@@ -140,6 +142,7 @@ async function updateOrder(id, orderData) {
 }
 
 async function deleteOrder(id) {
+    console.log(`[API] Deleting order ${id}`);
     return fetchAPI(`/orders/${id}`, {
         method: 'DELETE'
     });

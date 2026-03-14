@@ -146,13 +146,32 @@ async function changeOrderStatus(orderId, newStatus) {
 }
 
 async function confirmDeleteOrder(id) {
+    if (!id) {
+        showNotification('Invalid order ID', 'danger');
+        return;
+    }
+    
+    console.log(`[Orders] Attempting to delete order ID: ${id}`);
+    
     if (confirm('Are you sure you want to permanently delete this order record? This action cannot be undone.')) {
         try {
-            await deleteOrder(id);
+            console.log(`[Orders] Calling deleteOrder API for ID: ${id}`);
+            const result = await deleteOrder(id);
+            console.log(`[Orders] Delete successful:`, result);
             showNotification('Order record deleted', 'success');
             loadOrders();
         } catch (error) {
-            showNotification(error.message || 'Failed to delete order', 'danger');
+            console.error(`[Orders] Delete failed for ID ${id}:`, error);
+            const errorMessage = error.message || 'Failed to delete order';
+            
+            // Provide more specific error messages
+            if (errorMessage.includes('404') || errorMessage.includes('not found')) {
+                showNotification('Order not found. It may have been already deleted.', 'warning');
+            } else if (errorMessage.includes('500') || errorMessage.includes('server error')) {
+                showNotification('Server error occurred. Please try again later.', 'danger');
+            } else {
+                showNotification(errorMessage, 'danger');
+            }
         }
     }
 }

@@ -95,22 +95,53 @@ async function loadProducts() {
 }
 
 async function confirmDeleteProduct(id) {
+    if (!id) {
+        showNotification('Invalid product ID', 'danger');
+        return;
+    }
+    
+    console.log(`[Products] Attempting to delete product ID: ${id}`);
+    
     if (confirm('Are you sure you want to delete this product? This will also remove its inventory records.')) {
         try {
-            await deleteProduct(id);
+            console.log(`[Products] Calling deleteProduct API for ID: ${id}`);
+            const result = await deleteProduct(id);
+            console.log(`[Products] Delete successful:`, result);
             showNotification('Product deleted successfully', 'success');
             loadProducts();
         } catch (error) {
-            showNotification(error.message || 'Failed to delete product', 'danger');
+            console.error(`[Products] Delete failed for ID ${id}:`, error);
+            const errorMessage = error.message || 'Failed to delete product';
+            
+            // Provide more specific error messages
+            if (errorMessage.includes('404') || errorMessage.includes('not found')) {
+                showNotification('Product not found. It may have been already deleted.', 'warning');
+            } else if (errorMessage.includes('500') || errorMessage.includes('server error')) {
+                showNotification('Server error occurred. Please try again later.', 'danger');
+            } else {
+                showNotification(errorMessage, 'danger');
+            }
         }
     }
 }
 
 async function openEditProductModal(id) {
+    if (!id) {
+        showNotification('Invalid product ID', 'danger');
+        return;
+    }
+    
+    console.log(`[Products] Attempting to edit product ID: ${id}`);
+    
     try {
         const products = await getProducts();
         const product = products.find(p => p.product_id === id);
-        if (!product) return;
+        if (!product) {
+            showNotification('Product not found', 'danger');
+            return;
+        }
+
+        console.log(`[Products] Found product:`, product);
 
         document.getElementById('editProductId').value = product.product_id;
         document.getElementById('editProductName').value = product.name;
@@ -129,7 +160,13 @@ async function openEditProductModal(id) {
             select.appendChild(option);
         });
 
-        const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        const modalElement = document.getElementById('editProductModal');
+        if (!modalElement) {
+            showNotification('Edit modal not found', 'danger');
+            return;
+        }
+        
+        const modal = new bootstrap.Modal(modalElement);
         modal.show();
 
         // One-time listener for the edit form
@@ -143,17 +180,31 @@ async function openEditProductModal(id) {
                 supplier_id: parseInt(document.getElementById('editProductSupplier').value, 10)
             };
 
+            console.log(`[Products] Updating product ${id} with data:`, updatedData);
+
             try {
-                await updateProduct(id, updatedData);
+                const result = await updateProduct(id, updatedData);
+                console.log(`[Products] Update successful:`, result);
                 showNotification('Product updated successfully', 'success');
                 modal.hide();
                 loadProducts();
             } catch (error) {
-                showNotification(error.message || 'Failed to update product', 'danger');
+                console.error(`[Products] Update failed for ID ${id}:`, error);
+                const errorMessage = error.message || 'Failed to update product';
+                
+                // Provide more specific error messages
+                if (errorMessage.includes('404') || errorMessage.includes('not found')) {
+                    showNotification('Product not found. It may have been deleted.', 'warning');
+                } else if (errorMessage.includes('500') || errorMessage.includes('server error')) {
+                    showNotification('Server error occurred. Please try again later.', 'danger');
+                } else {
+                    showNotification(errorMessage, 'danger');
+                }
             }
         };
 
     } catch (error) {
+        console.error(`[Products] Error opening edit modal for ID ${id}:`, error);
         showNotification('Failed to load product details', 'danger');
     }
 }
