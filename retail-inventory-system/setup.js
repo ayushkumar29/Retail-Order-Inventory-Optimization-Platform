@@ -137,8 +137,8 @@ async function setupDatabase() {
                     p.name AS product_name,
                     p.category,
                     oi.quantity,
-                    oi.price AS unit_price,
-                    (oi.quantity * oi.price) AS line_total
+                    p.price AS unit_price,
+                    (oi.quantity * p.price) AS line_total
                 FROM Orders o
                 JOIN OrderItems oi ON o.order_id = oi.order_id
                 JOIN Products p ON oi.product_id = p.product_id
