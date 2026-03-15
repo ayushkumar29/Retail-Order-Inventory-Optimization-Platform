@@ -230,12 +230,12 @@ async function setupDatabase() {
         console.log('   📱 Adding products...');
         await connection.query(`
             INSERT INTO Products (name, category, price, supplier_id) VALUES
-            ('Quantum Gaming Laptop', 'Electronics', 1299.00, 1),
-            ('Solar Power Bank', 'Electronics', 49.99, 1),
-            ('Memory Foam Mattress', 'Furniture', 599.50, 2),
-            ('Adjustable Dumbbells', 'Fitness', 149.00, 3),
-            ('Yoga Mat Extra Thick', 'Fitness', 29.99, 3),
-            ('Lenovo Monitor', 'Electronics', 299.99, 1)
+            ('Quantum Gaming Laptop', 'Electronics', 107817.00, 1),
+            ('Solar Power Bank', 'Electronics', 4149.17, 1),
+            ('Memory Foam Mattress', 'Furniture', 49758.50, 2),
+            ('Adjustable Dumbbells', 'Fitness', 12367.00, 3),
+            ('Yoga Mat Extra Thick', 'Fitness', 2489.17, 3),
+            ('Lenovo Monitor', 'Electronics', 24899.17, 1)
         `);
         console.log('   ✅ 6 products added');
 
@@ -268,13 +268,13 @@ async function setupDatabase() {
         console.log('   📋 Adding order items...');
         await connection.query(`
             INSERT INTO OrderItems (order_id, product_id, quantity, price) VALUES
-            (1, 1, 1, 1299.00),  -- Charlie: 1 Laptop
-            (1, 2, 2, 49.99),    -- Charlie: 2 Power banks
-            (2, 4, 1, 149.00),   -- Diana: 1 Dumbbell
-            (3, 3, 1, 599.50),   -- Bruce: 1 Mattress
-            (4, 5, 3, 29.99),    -- Peter: 3 Yoga mats
-            (5, 6, 2, 299.99),   -- Tony: 2 Monitors
-            (5, 1, 1, 1299.00)   -- Tony: 1 Laptop
+            (1, 1, 1, 107817.00),  -- Charlie: 1 Laptop
+            (1, 2, 2, 4149.17),    -- Charlie: 2 Power banks
+            (2, 4, 1, 12367.00),   -- Diana: 1 Dumbbell
+            (3, 3, 1, 49758.50),   -- Bruce: 1 Mattress
+            (4, 5, 3, 2489.17),    -- Peter: 3 Yoga mats
+            (5, 6, 2, 24899.17),   -- Tony: 2 Monitors
+            (5, 1, 1, 107817.00)   -- Tony: 1 Laptop
         `);
         console.log('   ✅ 7 order items added\n');
 

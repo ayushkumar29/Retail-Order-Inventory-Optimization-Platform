@@ -71,7 +71,7 @@ async function loadProducts() {
                 <td class="fw-bold">${product.name}</td>
                 <td><span class="badge bg-secondary">${product.category}</span></td>
                 <td><span class="text-muted small">${product.supplier_name || 'N/A'}</span></td>
-                <td>$${parseFloat(product.price).toFixed(2)}</td>
+                <td>₹${parseFloat(product.price).toFixed(2)}</td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-link text-dark p-0" type="button" data-bs-toggle="dropdown">

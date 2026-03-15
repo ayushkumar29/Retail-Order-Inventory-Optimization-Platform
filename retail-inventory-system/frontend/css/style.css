@@ -74,6 +74,128 @@ body {
   color: var(--dark-color);
 }
 
+/* Dashboard Metric Cards */
+.metric-card {
+  min-height: 140px;
+}
+
+.metric-card .card-text.display-4 {
+  font-size: 2rem !important;
+  line-height: 1.2;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.metric-card .card-title {
+  font-size: 0.875rem !important;
+  margin-bottom: 0.5rem;
+}
+
+.metric-card .d-flex {
+  height: 100%;
+  align-items: center;
+}
+
+.metric-card .bg-light {
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Clickable Cards */
+.clickable-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.clickable-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.clickable-card:active {
+  transform: translateY(-2px);
+}
+
+.clickable-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 12px;
+}
+
+.clickable-card:hover::after {
+  opacity: 1;
+}
+
+/* Revenue Card - Full Width */
+.revenue-card {
+  min-height: 120px;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+
+.revenue-amount {
+  font-weight: 800;
+  color: var(--dark-color);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.revenue-card .card-title {
+  font-size: 1rem !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.revenue-card .bg-light {
+  min-width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .revenue-amount {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .revenue-card .bg-light {
+    min-width: 60px;
+    height: 60px;
+  }
+  
+  .revenue-card .fa-3x {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .revenue-card .d-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .revenue-amount {
+    font-size: clamp(1.25rem, 6vw, 2rem);
+  }
+}
+
 /* Tables */
 .table-container {
   background: #fff;

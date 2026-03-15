@@ -6,17 +6,33 @@ async function initDashboard() {
     }
 }
 
+// Navigate to specific page
+function navigateToPage(page) {
+    // Update URL hash
+    window.location.hash = page;
+}
+
+// Format number in Indian style (e.g., 1,23,456.78)
+function formatINR(amount) {
+    const formatted = new Intl.NumberFormat('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(amount);
+    return formatted;
+}
+
 async function loadDashboardData() {
     try {
         // Fetch all data concurrently
-        const [products, orders, inventory, lowStock, salesReport, productPerformance, inventoryReport] = await Promise.all([
+        const [products, orders, inventory, lowStock, salesReport, productPerformance, inventoryReport, suppliers] = await Promise.all([
             getProducts(),
             getOrders(),
             getInventory(),
             getLowStock(),
             getSalesReport(),
             getProductPerformanceReport(),
-            getInventoryReport()
+            getInventoryReport(),
+            getSuppliers()
         ]);
 
         // Update Basic Metrics
@@ -34,12 +50,13 @@ async function loadDashboardData() {
                 totalRevenue += parseFloat(order.total_price);
             }
         });
-        document.getElementById('total-revenue').innerText = `$${totalRevenue.toFixed(2)}`;
+        document.getElementById('total-revenue').innerText = `₹${formatINR(totalRevenue)}`;
 
         // Load detailed sections
         await loadSalesSummary(salesReport);
         await loadProductPerformance(productPerformance);
         await loadInventoryStatus(inventoryReport);
+        await loadSuppliersOverview(suppliers, products);
 
     } catch (error) {
         console.error('Dashboard loading error:', error);
@@ -58,7 +75,7 @@ async function loadSalesSummary(salesData) {
         <tr>
             <td>${new Date(sale.sale_date).toLocaleDateString()}</td>
             <td><span class="badge bg-info">${sale.total_orders}</span></td>
-            <td><strong>$${parseFloat(sale.total_revenue).toFixed(2)}</strong></td>
+            <td><strong>₹${formatINR(sale.total_revenue)}</strong></td>
             <td>${sale.total_items_sold}</td>
         </tr>
     `).join('');
@@ -75,7 +92,7 @@ async function loadProductPerformance(performanceData) {
         <tr>
             <td><strong>${product.product_name}</strong></td>
             <td><span class="badge bg-primary">${product.total_quantity_sold}</span></td>
-            <td><strong>$${parseFloat(product.total_revenue).toFixed(2)}</strong></td>
+            <td><strong>₹${formatINR(product.total_revenue)}</strong></td>
         </tr>
     `).join('');
 }
@@ -108,3 +125,31 @@ async function loadInventoryStatus(inventoryData) {
         `;
     }).join('');
 }
+
+async function loadSuppliersOverview(suppliers, products) {
+    const tbody = document.getElementById('suppliers-overview-body');
+    if (!suppliers || suppliers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-muted">No suppliers found</td></tr>';
+        return;
+    }
+
+    // Count products per supplier
+    const supplierProductCount = {};
+    suppliers.forEach(s => supplierProductCount[s.supplier_id] = 0);
+    products.forEach(p => {
+        if (p.supplier_id && supplierProductCount[p.supplier_id] !== undefined) {
+            supplierProductCount[p.supplier_id]++;
+        }
+    });
+
+    tbody.innerHTML = suppliers.map(supplier => `
+        <tr>
+            <td><strong>${supplier.supplier_name}</strong></td>
+            <td><a href="mailto:${supplier.contact_email}" class="text-muted">${supplier.contact_email}</a></td>
+            <td><span class="badge bg-info">${supplierProductCount[supplier.supplier_id] || 0}</span></td>
+        </tr>
+    `).join('');
+}
+
+// Make refresh function globally accessible
+window.refreshDashboard = loadDashboardData;

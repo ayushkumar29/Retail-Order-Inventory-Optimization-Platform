@@ -4,8 +4,8 @@ function DashboardView() {
         
         <!-- Key Metrics Cards -->
         <div class="row g-4 mt-2">
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--primary-color) !important;">
+            <div class="col-md-4">
+                <div class="card p-4 h-100 border-0 metric-card clickable-card" style="border-left: 5px solid var(--primary-color) !important;" onclick="navigateToPage('/products')" title="Click to view Products">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title text-muted mb-2">Total Products</h5>
@@ -17,8 +17,8 @@ function DashboardView() {
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--success-color) !important;">
+            <div class="col-md-4">
+                <div class="card p-4 h-100 border-0 metric-card clickable-card" style="border-left: 5px solid var(--success-color) !important;" onclick="navigateToPage('/orders')" title="Click to view Orders">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title text-muted mb-2">Total Orders</h5>
@@ -30,8 +30,8 @@ function DashboardView() {
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--danger-color) !important;">
+            <div class="col-md-4">
+                <div class="card p-4 h-100 border-0 metric-card clickable-card" style="border-left: 5px solid var(--danger-color) !important;" onclick="navigateToPage('/inventory')" title="Click to view Inventory">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="card-title text-muted mb-2">Low Stock Items</h5>
@@ -43,15 +43,19 @@ function DashboardView() {
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card p-4 h-100 border-0" style="border-left: 5px solid var(--warning-color) !important;">
+        </div>
+
+        <!-- Total Revenue - Separate Row -->
+        <div class="row g-4 mt-4">
+            <div class="col-12">
+                <div class="card p-4 border-0 revenue-card" style="border-left: 5px solid var(--warning-color) !important;">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="card-title text-muted mb-2">Total Revenue</h5>
-                            <h2 class="card-text display-4 mb-0" id="total-revenue">₹-</h2>
+                        <div class="flex-grow-1">
+                            <h5 class="card-title text-muted mb-3">Total Revenue</h5>
+                            <h1 class="revenue-amount mb-0" id="total-revenue">₹-</h1>
                         </div>
-                        <div class="bg-light p-3 rounded-circle" style="color: var(--warning-color);">
-                            <i class="fa-solid fa-indian-rupee-sign fa-2x"></i>
+                        <div class="bg-light p-4 rounded-circle" style="color: var(--warning-color);">
+                            <i class="fa-solid fa-indian-rupee-sign fa-3x"></i>
                         </div>
                     </div>
                 </div>
@@ -140,6 +144,33 @@ function DashboardView() {
                 </div>
             </div>
         </div>
+
+        <!-- Suppliers Overview -->
+        <div class="row g-4 mt-4">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="m-0 fw-bold text-info"><i class="fa-solid fa-truck-field me-2"></i>Suppliers Overview</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Supplier Name</th>
+                                        <th>Contact Email</th>
+                                        <th>Total Products</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="suppliers-overview-body">
+                                    <tr><td colspan="3" class="text-center py-4">Loading suppliers data...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     `;
 }
 
@@ -166,7 +197,7 @@ function ProductsView() {
                             <input type="text" class="form-control" id="productCategory" required placeholder="e.g. Electronics">
                         </div>
                         <div class="col-md-3">
-                            <label for="productPrice" class="form-label">Price ($)</label>
+                            <label for="productPrice" class="form-label">Price (₹)</label>
                             <input type="number" class="form-control" id="productPrice" required min="0" step="0.01" placeholder="0.00">
                         </div>
                         <div class="col-md-3">
@@ -364,6 +395,7 @@ function OrdersView() {
                         <th>Order ID</th>
                         <th>Customer Name</th>
                         <th>Product</th>
+                        <th>Supplier</th>
                         <th>Quantity</th>
                         <th>Total Price</th>
                         <th>Status</th>
@@ -373,7 +405,7 @@ function OrdersView() {
                 </thead>
                 <tbody id="orders-table-body">
                     <tr>
-                        <td colspan="8" class="text-center py-4 text-muted">
+                        <td colspan="9" class="text-center py-4 text-muted">
                             <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
                             Loading orders...
                         </td>
@@ -490,7 +522,7 @@ function ProductEditModalView() {
                                     <input type="text" class="form-control bg-light" id="editProductCategory" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-muted">Price ($)</label>
+                                    <label class="form-label small fw-bold text-muted">Price (₹)</label>
                                     <input type="number" class="form-control bg-light" id="editProductPrice" step="0.01" required>
                                 </div>
                             </div>

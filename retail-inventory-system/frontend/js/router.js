@@ -6,7 +6,6 @@ const routes = {
     '/products': { title: 'Products', view: ProductsView, init: initProducts },
     '/inventory': { title: 'Inventory', view: InventoryView, init: initInventory },
     '/suppliers': { title: 'Suppliers', view: SuppliersView, init: initSuppliers },
-    '/reports': { title: 'Reports', view: ReportsView, init: initReports },
     '/orders': { title: 'Orders', view: OrdersView, init: initOrders }
 };
 

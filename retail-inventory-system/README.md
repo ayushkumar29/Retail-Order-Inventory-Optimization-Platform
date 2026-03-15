@@ -73,12 +73,12 @@ The setup creates a complete demo environment with:
 - ActiveWear Pro (Fitness)
 
 **Products (6):**
-- Quantum Gaming Laptop - $1,299
-- Solar Power Bank - $49.99
-- Memory Foam Mattress - $599.50
-- Adjustable Dumbbells - $149.00
-- Yoga Mat Extra Thick - $29.99
-- Lenovo Monitor - $299.99
+- Quantum Gaming Laptop - ₹1,07,817
+- Solar Power Bank - ₹4,149
+- Memory Foam Mattress - ₹49,759
+- Adjustable Dumbbells - ₹12,367
+- Yoga Mat Extra Thick - ₹2,489
+- Lenovo Monitor - ₹24,899
 
 **Orders (5):**
 - Various customer orders with different statuses
